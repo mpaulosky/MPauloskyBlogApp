@@ -1,17 +1,19 @@
-using System.Text.Json;
-
-using Blog.Components.Pages.Account;
-using Blog.Components.Pages.Account.Manage;
-using Blog.Data;
+// ============================================
+// Copyright (c) 2023. All rights reserved.
+// File Name :     IdentityComponentsEndpointRouteBuilderExtensions.cs
+// Company :       mpaulosky
+// Author :        Matthew Paulosky
+// Solution Name : MPauloskyBlogApp
+// Project Name :  Blog
+// =============================================
 
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
 namespace Blog.Identity.Extensions;
+
 internal static class IdentityComponentsEndpointRouteBuilderExtensions
 {
 	// These endpoints are required by the Identity Razor components defined in the /Components/Pages/Account directory of this project.
@@ -22,19 +24,21 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 		var accountGroup = endpoints.MapGroup("/Account");
 
 		accountGroup.MapPost("/PerformExternalLogin", (
-				HttpContext context,
-				[FromServices] SignInManager<ApplicationUser> signInManager,
-				[FromForm] string provider,
-				[FromForm] string returnUrl) =>
+			HttpContext context,
+			[FromServices] SignInManager<ApplicationUser> signInManager,
+			[FromForm] string provider,
+			[FromForm] string returnUrl) =>
 		{
-			IEnumerable<KeyValuePair<string, StringValues>> query = [
-							new("ReturnUrl", returnUrl),
-				new("Action", ExternalLogin.LoginCallbackAction)];
+			IEnumerable<KeyValuePair<string, StringValues>> query =  [
+				new (
+
+			"ReturnUrl", returnUrl),
+			new("Action", ExternalLogin.LoginCallbackAction)];
 
 			var redirectUrl = UriHelper.BuildRelative(
-							context.Request.PathBase,
-							$"/Account/ExternalLogin",
-							QueryString.Create(query));
+				context.Request.PathBase,
+				$"/Account/ExternalLogin",
+				QueryString.Create(query));
 
 			var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 			return Results.Challenge(properties, [provider]);
@@ -43,19 +47,20 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 		var manageGroup = accountGroup.MapGroup("/Manage").RequireAuthorization();
 
 		manageGroup.MapPost("/LinkExternalLogin", async (
-				HttpContext context,
-				[FromServices] SignInManager<ApplicationUser> signInManager,
-				[FromForm] string provider) =>
+			HttpContext context,
+			[FromServices] SignInManager<ApplicationUser> signInManager,
+			[FromForm] string provider) =>
 		{
 			// Clear the existing external cookie to ensure a clean login process
 			await context.SignOutAsync(IdentityConstants.ExternalScheme);
 
 			var redirectUrl = UriHelper.BuildRelative(
-							context.Request.PathBase,
-							$"/Account/Manage/ExternalLogins",
-							QueryString.Create("Action", ExternalLogins.LinkLoginCallbackAction));
+				context.Request.PathBase,
+				$"/Account/Manage/ExternalLogins",
+				QueryString.Create("Action", ExternalLogins.LinkLoginCallbackAction));
 
-			var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, signInManager.UserManager.GetUserId(context.User));
+			var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl,
+				signInManager.UserManager.GetUserId(context.User));
 			return Results.Challenge(properties, [provider]);
 		});
 
@@ -63,9 +68,9 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 		var downloadLogger = loggerFactory.CreateLogger("DownloadPersonalData");
 
 		manageGroup.MapPost("/DownloadPersonalData", async (
-				HttpContext context,
-				[FromServices] UserManager<ApplicationUser> userManager,
-				[FromServices] AuthenticationStateProvider authenticationStateProvider) =>
+			HttpContext context,
+			[FromServices] UserManager<ApplicationUser> userManager,
+			[FromServices] AuthenticationStateProvider authenticationStateProvider) =>
 		{
 			var user = await userManager.GetUserAsync(context.User);
 			if (user is null)
@@ -79,7 +84,7 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 			// Only include personal data for download
 			var personalData = new Dictionary<string, string>();
 			var personalDataProps = typeof(ApplicationUser).GetProperties().Where(
-							prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
+				prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
 			foreach (var p in personalDataProps)
 			{
 				personalData.Add(p.Name, p.GetValue(user)?.ToString() ?? "null");

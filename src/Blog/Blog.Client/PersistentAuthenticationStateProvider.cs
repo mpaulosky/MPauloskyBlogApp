@@ -1,13 +1,22 @@
-using System.Security.Claims;
+// ============================================
+// Copyright (c) 2023. All rights reserved.
+// File Name :     PersistentAuthenticationStateProvider.cs
+// Company :       mpaulosky
+// Author :        Matthew Paulosky
+// Solution Name : MPauloskyBlogApp
+// Project Name :  Blog.Client
+// =============================================
 
+using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Blog.Client;
-public class PersistentAuthenticationStateProvider(PersistentComponentState persistentState) : AuthenticationStateProvider
+
+public class PersistentAuthenticationStateProvider
+	(PersistentComponentState persistentState) : AuthenticationStateProvider
 {
 	private static readonly Task<AuthenticationState> _unauthenticatedTask =
-			Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
+		Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
 
 	public override Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
@@ -16,14 +25,14 @@ public class PersistentAuthenticationStateProvider(PersistentComponentState pers
 			return _unauthenticatedTask;
 		}
 
-		Claim[] claims = [
-				new Claim(ClaimTypes.NameIdentifier, userInfo.UserId),
-			new Claim(ClaimTypes.Name, userInfo.Email),
-			new Claim(ClaimTypes.Email, userInfo.Email)];
+		Claim[] claims =  [
+			new Claim(ClaimTypes.NameIdentifier, userInfo.UserId),
+
+		new Claim(ClaimTypes.Name, userInfo.Email),
+		new Claim(ClaimTypes.Email, userInfo.Email)];
 
 		return Task.FromResult(
-				new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(claims,
-						authenticationType: nameof(PersistentAuthenticationStateProvider)))));
+			new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(claims,
+				authenticationType: nameof(PersistentAuthenticationStateProvider)))));
 	}
 }
-

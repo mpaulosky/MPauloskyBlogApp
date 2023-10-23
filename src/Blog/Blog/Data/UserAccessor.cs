@@ -7,9 +7,6 @@
 // Project Name :  Blog
 // =============================================
 
-using Blog.Identity;
-using Microsoft.AspNetCore.Identity;
-
 namespace Blog.Data;
 
 internal sealed class UserAccessor(

@@ -8,12 +8,44 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Blog.Client\Blog.Client.csproj" />
+    <PackageReference Include="BuildWebCompiler2022" Version="1.14.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.0-rc.2.23480.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0-rc.2.23480.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0-rc.2.23480.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Styles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\Styles\BlogSass.scss" />
+    <None Include="wwwroot\Styles\components\_animations.scss" />
+    <None Include="wwwroot\Styles\components\_banner.scss" />
+    <None Include="wwwroot\Styles\components\_buttons.scss" />
+    <None Include="wwwroot\Styles\components\_mixins.scss" />
+    <None Include="wwwroot\Styles\components\_typography.scss" />
+    <None Include="wwwroot\Styles\fontawesome.scss" />
+    <None Include="wwwroot\Styles\sections\_companies.scss" />
+    <None Include="wwwroot\Styles\sections\_faq.scss" />
+    <None Include="wwwroot\Styles\sections\_footer.scss" />
+    <None Include="wwwroot\Styles\sections\_get-started.scss" />
+    <None Include="wwwroot\Styles\sections\_intro-section.scss" />
+    <None Include="wwwroot\Styles\sections\_navbar.scss" />
+    <None Include="wwwroot\Styles\sections\_portfolio.scss" />
+    <None Include="wwwroot\Styles\sections\_services.scss" />
+    <None Include="wwwroot\Styles\sections\_testimonials.scss" />
+    <None Include="wwwroot\Styles\_custom.scss" />
   </ItemGroup>
 
 </Project>

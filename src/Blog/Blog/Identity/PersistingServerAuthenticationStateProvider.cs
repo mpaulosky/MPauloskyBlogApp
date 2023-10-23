@@ -1,15 +1,21 @@
+// ============================================
+// Copyright (c) 2023. All rights reserved.
+// File Name :     PersistingServerAuthenticationStateProvider.cs
+// Company :       mpaulosky
+// Author :        Matthew Paulosky
+// Solution Name : MPauloskyBlogApp
+// Project Name :  Blog
+// =============================================
+
 using System.Diagnostics;
-
 using Blog.Client;
-
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 namespace Blog.Identity;
+
 public class PersistingServerAuthenticationStateProvider : ServerAuthenticationStateProvider, IDisposable
 {
 	private readonly PersistentComponentState _state;
@@ -37,7 +43,8 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
 	{
 		if (_authenticationStateTask is null)
 		{
-			throw new UnreachableException($"Authentication state not set in {nameof(RevalidatingServerAuthenticationStateProvider)}.{nameof(OnPersistingAsync)}().");
+			throw new UnreachableException(
+				$"Authentication state not set in {nameof(RevalidatingServerAuthenticationStateProvider)}.{nameof(OnPersistingAsync)}().");
 		}
 
 		var authenticationState = await _authenticationStateTask;

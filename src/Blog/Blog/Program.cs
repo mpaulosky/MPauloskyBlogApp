@@ -7,17 +7,8 @@
 // Project Name :  Blog
 // =============================================
 
-using Blog.Client.Pages;
-using Blog.Components;
-using Blog.Data;
-using Blog.Identity;
-using Blog.Identity.Extensions;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -30,17 +21,19 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenti
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
-	.AddIdentityCookies()
+	.AddIdentityCookies();
+
+builder.Services.AddAuthentication()
 	.AddGoogle(options =>
 	{
-		IConfigurationSection googleAuthNSection = config.GetSection("Authentication:Google");
-		options.ClientId = googleAuthNSection["ClientId"];
-		options.ClientSecret = googleAuthNSection["ClientSecret"];
+		var googleAuthNSection = config.GetSection("Authentication:Google");
+		options.ClientId = googleAuthNSection["ClientId"]!;
+		options.ClientSecret = googleAuthNSection["ClientSecret"]!;
 	})
 	.AddMicrosoftAccount(microsoftOptions =>
 	{
-		microsoftOptions.ClientId = config["Authentication:Microsoft:ClientId"];
-		microsoftOptions.ClientSecret = config["Authentication:Microsoft:ClientSecret"];
+		microsoftOptions.ClientId = config["Authentication:Microsoft:ClientId"]!;
+		microsoftOptions.ClientSecret = config["Authentication:Microsoft:ClientSecret"]!;
 	});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??

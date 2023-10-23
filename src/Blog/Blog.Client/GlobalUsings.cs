@@ -1,16 +1,12 @@
 // ============================================
 // Copyright (c) 2023. All rights reserved.
-// File Name :     UserInfo.cs
+// File Name :     GlobalUsings.cs
 // Company :       mpaulosky
 // Author :        Matthew Paulosky
 // Solution Name : MPauloskyBlogApp
 // Project Name :  Blog.Client
 // =============================================
 
-namespace Blog.Client;
-
-public class UserInfo
-{
-	public required string UserId { get; set; }
-	public required string Email { get; set; }
-}
+global using Blog.Client;
+global using Microsoft.AspNetCore.Components.Authorization;
+global using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
