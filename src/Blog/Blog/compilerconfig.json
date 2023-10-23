@@ -1,0 +1,12 @@
+[
+  {
+    "outputFile": "wwwroot/css/BlogSass.css",
+    "inputFile": "wwwroot/Styles/BlogSass.scss",
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFile": "wwwroot/css/fontawesome.css",
+    "inputFile": "wwwroot/Styles/fontawesome.scss",
+    "minify": { "enabled": true }
+  }
+]
